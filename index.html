@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" href="css/kepler.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="body" id="map">
+      hey
+    </div>
+    <div class="footer">
+      <div class="flexchild">
+        <div class="divHeader utils">
+          Total Kilometers Collected
+        </div>
+        <div class="dimBody">
+
+        </div>
+      </div>
+      <div class="flexchild documentation">
+        <div class="divHeader coords">
+          Total Uploads
+        </div>
+        <div class="dimBody">
+          <table id="detailsTable">
+            <tr class="tableHeader">
+              <th style="border-right: 1px solid white;">
+                File Number
+              </th>
+              <th>
+                Kilometers
+              </th>
+            </tr>
+            <tr class="tableHeader">
+              <td style="border-right: 1px solid white;">
+                <span class="landDoc" id="cofo">
+                  &#10004;
+                </span>
+              </td>
+              <td>
+                <span class="landDoc" id="surveyPlan">
+                  &#10004;
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+      </div>
+      <div class="flexchild buildingZone">
+        <div class="divHeader bType">
+          Camera 1
+        </div>
+        <div class="dimBody">
+          <span class="landZone" id="bldZone">Residential</span>
+        </div>
+      </div>
+      <div class="flexchild buildingArea">
+        <div class="divHeader dim">
+          Camera 2
+        </div>
+        <div class="dimBody">
+          <span class="landArea" id="plotArea">4689</span><span class="posttext">sqm</span>
+        </div>
+      </div>
+      <div class="flexchild">
+        <div class="divHeader utils">
+          Total Kilometers (2024)
+        </div>
+        <div class="dimBody">
+        </div>
+      </div>
+      <div class="flexchild coordinates">
+        <div class="divHeader coords">
+          Camera 3
+        </div>
+        <div class="dimBody">
+          <table id="detailsTable">
+            <tr class="tableHeader">
+              <th style="border-right: 1px solid white;">
+                Kilometers
+              </th>
+              <th>
+                % of Total
+              </th>
+            </tr>
+            <tr class="tableHeader">
+              <td style="border-right: 1px solid white;">
+                <span class="landDoc" id="lat">
+
+                </span>
+              </td>
+              <td>
+                <span class="landDoc" id="lon">
+
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="flexchild">
+        <div class="divHeader bType">
+          Camera 4
+        </div>
+        <div class="dimBody">
+          <table id="detailsTable">
+            <tr class="tableHeader pink">
+              <th style="border-right: 1px solid white; color:pink">
+                Kilometers
+              </th>
+              <th style="color:pink">
+                % of Total
+              </th>
+            </tr>
+            <tr class="tableHeader">
+              <td style="border-right: 1px solid white;">
+                <span class="buildingType" id="bldType">
+
+                </span>
+              </td>
+              <td>
+                <span class="buildingType" id="floors">
+
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="flexchild dimension">
+        <div class="divHeader dim">
+          Camera 5
+        </div>
+        <div class="dimBody">
+          <span class="landArea" id="plotNumber">9</span>
+        </div>
+      </div>
+      <div class="flexchild last">
+
+        <div class="dimBody">
+          <table id="ownershipTable">
+            <tr>
+              <th>
+                S/N
+              </th>
+              <th>
+                State
+              </th>
+              <th>
+                Kilometers Covered
+              </th>
+              <th>
+                % of Total
+              </th>
+              <th>
+                Start Date
+              </th>
+            </tr>
+            <tr>
+              <td style="border-right: 1px solid white;">
+                1
+              </td>
+              <td>
+                Dr. John Snow
+              </td>
+              <td>
+                Prof. Jamie Lanister
+              </td>
+              <td>
+                01/01/2022
+              </td>
+              <td>
+                200,200,000
+              </td>
+            </tr>
+            <tr>
+              <td style="border-right: 1px solid white;">
+                2
+              </td>
+              <td>
+                Prof. Jamie Lanister
+              </td>
+              <td>
+                Sir. Robert Baratheon
+              </td>
+              <td>
+                01/01/2019
+              </td>
+              <td>
+                120,200,000
+              </td>
+            </tr>
+            <tr>
+              <td style="border-right: 1px solid white;">
+                3
+              </td>
+              <td>
+                Sir. Robert Baratheon
+              </td>
+              <td>
+                Mrs. Cersei Lannister
+              </td>
+              <td>
+                01/01/2015
+              </td>
+              <td>
+                90,200,000
+              </td>
+            </tr>
+            </tr>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!--
+    
+  -->
+  <script src="scripts/kepler.js"></script>
+</body>
+
+</html>
