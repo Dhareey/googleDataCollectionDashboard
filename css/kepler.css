@@ -84,9 +84,9 @@ body {
 
 .divHeader {
   padding: 0px;
-  max-height: 35px;
+  max-height: 25px;
   background-color: black;
-  line-height: 35px;
+  line-height: 25px;
   font-family: 'Lato', sans-serif;
   font-size: medium;
 }
@@ -156,12 +156,14 @@ body {
 }
 
 .tableHeader td {
-  line-height: 40px;
+  line-height: 30px;
+  text-align: center;
+  font-size: small;
 }
 
 .landDoc {
   font-family: 'Montserrat', sans-serif;
-  font-size: 250%;
+  font-size: 200%;
   color: aquamarine;
   margin: 0;
   padding: 0;
@@ -218,24 +220,9 @@ body {
   text-align: center;
 }
 
-.pictureFrame {
-  position: absolute;
-  z-index: 999;
-  height: 300px;
-  width: 300px;
-  background-color: black;
-  border: 1px solid white;
-  right: 0;
-  display: none;
-}
-
-#landPic {
-  object-fit: contain;
-}
-
 #ownershipTable th {
   border-bottom: 1px solid white;
-  line-height: 30px;
+  line-height: 20px;
   color: orangered;
   font-family: 'Montserrat', sans-serif;
   border-right: 1px solid white;
@@ -243,7 +230,7 @@ body {
 
 #ownershipTable td {
   border-bottom: 1px solid white;
-  line-height: 30px;
+  line-height: 20px;
   color: orangered;
   font-family: 'Montserrat', sans-serif;
   border-right: 1px solid white;
