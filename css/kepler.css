@@ -26,19 +26,19 @@ body {
   grid-template-rows: 1fr;
   grid-template-areas: "body" "body" "footer";
   height: 100vh;
-  overflow: hidden;
+ 
 
 }
 
-.body {
+.bodyDiv {
   grid-area: body;
-  background-color: #212120;
   margin: 5px;
   margin-left: 0px;
   margin-right: 0px;
   margin-top: 0px;
   padding: 0px;
   border: 1px solid #ececec;
+  height: 100%;
 
 
 }
@@ -104,7 +104,7 @@ body {
 }
 
 .utils {
-  color: #ff0000;
+  color: #00ff00;
 }
 
 .owner {
@@ -192,7 +192,7 @@ body {
 #utilitiesTable th {
   text-align: left;
   line-height: 20px;
-  color: #ff0000;
+  color: #00ff00;
   border-bottom: 1px solid white;
 }
 
@@ -200,7 +200,7 @@ body {
   text-align: left;
   line-height: 20px;
   font-family: 'Montserrat', sans-serif;
-  color: #ff0000;
+  color: #00ff00;
   border-bottom: 1px solid white;
 }
 
@@ -236,3 +236,30 @@ body {
   border-right: 1px solid white;
   text-align: left;
 }
+
+
+.ui-rangeSlider .ui-rangeSlider-container {
+  background: #eee;
+  height: 20px;
+}
+.ui-rangeSlider .ui-rangeSlider-label {
+  bottom: 35px;
+  color: #fff;
+  background: #0578c1;
+  padding: 11px;
+  font: bold 12px/1 arial;
+}
+.ui-rangeSlider .ui-rangeSlider-handle {
+  background: #04598f;
+}
+.ui-rangeSlider .ui-rangeSlider-bar {
+  background: #0578c1;
+  height: 20px;
+}
+.ui-rangeSlider .ui-rangeSlider-innerBar {
+  background: transparent;
+  height: 20px;
+}
+
+
+

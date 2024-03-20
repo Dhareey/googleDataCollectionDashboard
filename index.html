@@ -7,13 +7,90 @@
   <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
+  <script src="https://unpkg.com/@deck.gl/core@latest/dist.min.js"></script>
+  <script src="https://unpkg.com/@deck.gl/layers@latest/dist.min.js"></script>
+  <script src="https://unpkg.com/@deck.gl/aggregation-layers@^8.0.0/dist.min.js"></script>
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.css' rel='stylesheet' />
+
+
   <link rel="stylesheet" href="css/kepler.css">
+  <style>
+    body {
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+    }
+
+    #legend {
+      position: absolute;
+      top: 0px;
+      left: 10px;
+      background-color: #212120;
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 50;
+      color: rgba(255, 255, 255, 0.6);
+      width: 300px;
+      height: 300px;
+      font-size: 11px;
+    }
+  </style>
 </head>
 
 <body>
   <div class="container">
     <div class="body" id="map">
-      hey
+      <div id="legend">
+        <h4 id='legendHeading'>Basemaps</h4>
+        <label id='legendHeading'>
+          <input type="radio" name="basemap" value="dark-matter" checked>
+          Dark Matter
+        </label><br>
+        <label id='legendHeading'>
+          <input type="radio" name="basemap" value="positron">
+          Positron
+        </label><br>
+        <h4 id='legendHeading'>Layers</h4>
+        <label>
+          <input type="checkbox" name='bathy' id="bathyLayerCheckbox" checked onclick="toggle()">
+          Google Roads Layer
+        </label><br>
+        <label id='legendHeading'>
+          <input type="checkbox" name='routes' id="routeLayerCheckbox" checked onclick="toggle()">
+          Collected Data Layer
+        </label><br>
+        <h4 id='legendHeading'>State Name</h4>
+        <label id='legendHeading'>
+          <input type="checkbox" name='jetties' id="Oyo" checked onclick="toggle()">
+          Oyo
+        </label><br>
+        <label id='legendHeading'>
+          <input type="checkbox" name="landings" id="Ogun" checked onclick="toggle()">
+          Ogun
+        </label>
+        <label id='legendHeading'>
+          <input type="checkbox" name="landings" id="Lagos" checked onclick="toggle()">
+          Lagos
+        </label>
+        <label id='legendHeading'>
+          <input type="checkbox" name="landings" id="Edo" checked onclick="toggle()">
+          Edo
+        </label>
+        <label id='legendHeading'>
+          <input type="checkbox" name="landings" id="Delta" checked onclick="toggle()">
+          Delta
+        </label>
+        <label id='legendHeading'>
+          <input type="checkbox" name="landings" id="Kwara" checked onclick="toggle()">
+          Kwara
+        </label>
+        <h4 id='legendHeading'>Filter Collected Data</h4>
+        <div id="date_range_slider"></div>
+
+      </div>
     </div>
     <div class="footer">
       <div class="flexchild">
@@ -23,10 +100,10 @@
         <div class="dimBody">
           <table id="detailsTable">
             <tr class="tableHeader">
-              <th style="border-right: 1px solid white; color:#ff0000">
+              <th style="border-right: 1px solid white; color:#00ff00">
                 Kilometers
               </th>
-              <th style="color:#ff0000">
+              <th style="color:#00ff00">
                 % of Total
               </th>
             </tr>
@@ -62,13 +139,13 @@
             </tr>
             <tr class="tableHeader">
               <td style="border-right: 1px solid white;">
-                <span class="landDoc" id="cofo">
-
+                <span class="landDoc" id="totaluploads">
+                  200000
                 </span>
               </td>
               <td>
-                <span class="landDoc" id="surveyPlan">
-
+                <span class="landDoc" id="totalkmupload">
+                  500000
                 </span>
               </td>
             </tr>
@@ -92,13 +169,13 @@
             </tr>
             <tr class="tableHeader">
               <td style="border-right: 1px solid white;">
-                <span class="landDoc" id="cofo">
-
+                <span class="landDoc" id="cam1km" style="color:pink">
+                  234567
                 </span>
               </td>
               <td>
-                <span class="landDoc" id="surveyPlan">
-
+                <span class="landDoc" id="cam1kmpercent" style="color:pink">
+                  2.3345
                 </span>
               </td>
             </tr>
@@ -121,13 +198,13 @@
             </tr>
             <tr class="tableHeader">
               <td style="border-right: 1px solid white; ">
-                <span class="landDoc" id="cofo">
-
+                <span class="landDoc" id="cam2km" style="color: #da70d6;">
+                  873726
                 </span>
               </td>
               <td>
-                <span class="landDoc" id="surveyPlan">
-
+                <span class="landDoc" id="cam2kmpercent" style="color: #da70d6;">
+                  98.456
                 </span>
               </td>
             </tr>
@@ -141,22 +218,22 @@
         <div class="dimBody">
           <table id="detailsTable">
             <tr class="tableHeader">
-              <th style="border-right: 1px solid white; color:#ff0000">
+              <th style="border-right: 1px solid white; color:#00ff00">
                 Kilometers
               </th>
-              <th style="color:#ff0000">
+              <th style="color:#00ff00">
                 % of Total
               </th>
             </tr>
             <tr class="tableHeader">
               <td style="border-right: 1px solid white;">
-                <span class="landDoc" id="cofo">
-
+                <span class="landDoc" id="km24" >
+                  2024
                 </span>
               </td>
               <td>
-                <span class="landDoc" id="surveyPlan">
-
+                <span class="landDoc" id="km24percent">
+                  1.22
                 </span>
               </td>
             </tr>
@@ -179,13 +256,13 @@
             </tr>
             <tr class="tableHeader">
               <td style="border-right: 1px solid white;">
-                <span class="landDoc" id="lat">
-
+                <span class="landDoc" id="cam3km">
+                  2345675
                 </span>
               </td>
               <td>
-                <span class="landDoc" id="lon">
-
+                <span class="landDoc" id="cam3kmpercent">
+                  98.67
                 </span>
               </td>
             </tr>
@@ -208,13 +285,13 @@
             </tr>
             <tr class="tableHeader">
               <td style="border-right: 1px solid white;">
-                <span class="buildingType" id="bldType">
-
+                <span class="buildingType" id="cam4km">
+                  2345566
                 </span>
               </td>
               <td>
-                <span class="buildingType" id="floors">
-
+                <span class="buildingType" id="cam4kmpercent">
+                  65.98
                 </span>
               </td>
             </tr>
@@ -237,13 +314,13 @@
             </tr>
             <tr class="tableHeader">
               <td style="border-right: 1px solid white;">
-                <span class="landDoc" id="cofo">
-
+                <span class="landDoc" id="cam5km" style="color: #da70d6;">
+                  234567
                 </span>
               </td>
               <td>
-                <span class="landDoc" id="surveyPlan">
-
+                <span class="landDoc" id="cam5kmpercent" style="color: #da70d6;">
+                  76.0
                 </span>
               </td>
             </tr>
@@ -332,7 +409,7 @@
   <!--
     
   -->
-  <script src="scripts/kepler.js"></script>
+  <script src="scripts/deck.js"></script>
 </body>
 
 </html>
