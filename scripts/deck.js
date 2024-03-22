@@ -115,20 +115,20 @@ function updateGeneralStats() {
         return response.json();
     })
         .then(data => {
-            total_col_km_24.textContent = data["covered_km"];
-            total_col_km_24_percent.textContent = data["percent_covered"];
-            total_uploads_24.textContent = data["total_uploads"];
-            total_uploads_km_24.textContent = data["total_upload_km"];
-            cam_1_km_24.textContent = data["cam1_km"];
-            cam_1_km_24_percent.textContent = data["cam1_percent"];
-            cam_2_km_24.textContent = data["cam2_km"];
-            cam_2_km_24_percent.textContent = data["cam2_percent"];
-            cam_3_km_24.textContent = data["cam3_km"];
-            cam_3_km_24_percent.textContent = data["cam3_percent"];
-            cam_4_km_24.textContent = data["cam4_km"];
-            cam_4_km_24_percent.textContent = data["cam4_percent"];
-            cam_5_km_24.textContent = data["cam5_km"];
-            cam_5_km_24_percent.textContent = data["cam5_percent"];
+            total_col_km_24.textContent = data["covered_km"].toFixed(2);
+            total_col_km_24_percent.textContent = data["percent_covered"].toFixed(2);
+            total_uploads_24.textContent = data["total_uploads"].toFixed(2);
+            total_uploads_km_24.textContent = data["total_upload_km"].toFixed(2);
+            cam_1_km_24.textContent = data["cam1_km"].toFixed(2);
+            cam_1_km_24_percent.textContent = data["cam1_percent"].toFixed(2);
+            cam_2_km_24.textContent = data["cam2_km"].toFixed(2);
+            cam_2_km_24_percent.textContent = data["cam2_percent"].toFixed(2);
+            cam_3_km_24.textContent = data["cam3_km"].toFixed(2);
+            cam_3_km_24_percent.textContent = data["cam3_percent"].toFixed(2);
+            cam_4_km_24.textContent = data["cam4_km"].toFixed(2);
+            cam_4_km_24_percent.textContent = data["cam4_percent"].toFixed(2);
+            cam_5_km_24.textContent = data["cam5_km"].toFixed(2);
+            cam_5_km_24_percent.textContent = data["cam5_percent"].toFixed(2);
 
         })
         .catch(error => {
@@ -189,7 +189,16 @@ function toggle() {
             id: key,
             data: value,
             getPath: d => d.geometry, // Assuming your route dataset has a 'path' property
-            getColor: [0, 255, 0], // Red color for routes
+            getColor: d => {
+                const stat = d.status;
+                if (stat == 0) {
+                    return [255, 0, 0];
+                } else if (stat == 100) {
+                    return [0, 255, 0];
+                } else {
+                    return [0, 0, 255];
+                }
+            }, // Red color for routes
             getWidth: 20, // Width of the route lines
             getDashArray: [8, 4], // Dashed line effect
             pickable: true,
