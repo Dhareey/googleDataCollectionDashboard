@@ -1,3 +1,8 @@
+const pre_url = 'http://54.226.124.34:8000/api/get_all_google_roads'
+//const pre_url = 'http://127.0.0.1:8000/api/get_all_google_roads'
+const pre_url2 = "http://54.226.124.34:8000/api"
+//const pre_url2 = "http://127.0.0.1:8000/api"
+
 const { DeckGL, PathLayer, PolygonLayer, ColumnLayer } = deck;
 
 const LINE_COLOR = [0, 255, 0]; // Green color for the lines
@@ -76,12 +81,12 @@ function toggle(data) {
 }
  */
 
-const oyoUrl = "http://127.0.0.1:8000/api/get_all_google_roads?state_name=Oyo"
-const ogunUrl = "http://127.0.0.1:8000/api/get_all_google_roads?state_name=Ogun"
-const lagUrl = "http://127.0.0.1:8000/api/get_all_google_roads?state_name=Lagos"
-const edoUrl = "http://127.0.0.1:8000/api/get_all_google_roads?state_name=Edo"
-const deltaUrl = "http://127.0.0.1:8000/api/get_all_google_roads?state_name=Delta"
-const kwaraUrl = "http://127.0.0.1:8000/api/get_all_google_roads?state_name=Kwara"
+const oyoUrl = pre_url + "?state_name=Oyo"
+const ogunUrl = pre_url + "?state_name=Ogun"
+const lagUrl = pre_url + "?state_name=Lagos"
+const edoUrl = pre_url + "?state_name=Edo"
+const deltaUrl = pre_url + "?state_name=Delta"
+const kwaraUrl = pre_url + "?state_name=Kwara"
 let uniObject = {}
 
 
@@ -103,7 +108,7 @@ function updateGeneralStats() {
     let cam_5_km_24 = document.getElementById("cam5km");
     let cam_5_km_24_percent = document.getElementById("cam5kmpercent");
 
-    fetch("http://127.0.0.1:8000/api/get_stats").then(response => {
+    fetch(pre_url2 + "/get_stats").then(response => {
         if (!response.ok) {
             throw new Error("network response was not OK");
         }
@@ -134,7 +139,7 @@ function updateGeneralStats() {
 
 // Get State statistics
 function getStateStatistics() {
-    fetch("http://127.0.0.1:8000/api/get_state_stats").then(response => {
+    fetch(pre_url2 + "/get_state_stats").then(response => {
         if (!respomnse.ok) {
             throw new Error('Network Response was not ok');
         }
