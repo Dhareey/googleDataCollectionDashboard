@@ -26,8 +26,36 @@ body {
   grid-template-rows: 1fr;
   grid-template-areas: "body" "body" "footer";
   height: 100vh;
- 
 
+
+}
+
+input[type=button]{
+  background-color: #609fe7;
+  border:1px solid #609fe7;
+  border-radius: 10px;
+  color: white;
+  padding: 8px 40px;
+  text-decoration: none;
+  margin: 0px 0px;
+  cursor: pointer;
+}
+
+
+#amount {
+  color: white;
+}
+
+#slider-range .ui-slider-range {
+  background: #609fe7;
+  /* Blue color */
+}
+
+#slider-range .ui-slider-handle {
+  background: #007bff;
+  /* Blue color */
+  border: 2px solid #007bff;
+  /* Blue color */
 }
 
 .bodyDiv {
@@ -242,6 +270,7 @@ body {
   background: #eee;
   height: 20px;
 }
+
 .ui-rangeSlider .ui-rangeSlider-label {
   bottom: 35px;
   color: #fff;
@@ -249,17 +278,17 @@ body {
   padding: 11px;
   font: bold 12px/1 arial;
 }
+
 .ui-rangeSlider .ui-rangeSlider-handle {
   background: #04598f;
 }
+
 .ui-rangeSlider .ui-rangeSlider-bar {
   background: #0578c1;
   height: 20px;
 }
+
 .ui-rangeSlider .ui-rangeSlider-innerBar {
   background: transparent;
   height: 20px;
 }
-
-
-

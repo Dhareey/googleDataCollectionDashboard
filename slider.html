@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+    <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+</head>
+
+<body>
+    <p>
+        <label for="amount">Date range:</label>
+        <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" size="100" />
+    </p>
+    <div id="slider-range"></div>
+    <button id="search">Search</button>
+    <script>
+        $(function () {
+            var today = new Date();
+            var startDate = new Date('2024-02-21');
+            $("#slider-range").slider({
+                range: true,
+                min: startDate.getTime() / 86400000, // Divide by milliseconds in a day to get just date
+                max: today.getTime() / 86400000, // Divide by milliseconds in a day to get just date
+                step: 1, // Step by one day
+                values: [startDate.getTime() / 86400000, today.getTime() / 86400000], // Set initial values from startDate to today
+                slide: function (event, ui) {
+                    $("#amount").val(formatDate(new Date(ui.values[0] * 86400000)) + " - " + formatDate(new Date(ui.values[1] * 86400000)));
+                }
+            });
+            $("#amount").val(formatDate(new Date($("#slider-range").slider("values", 0) * 86400000)) +
+                " - " + formatDate(new Date($("#slider-range").slider("values", 1) * 86400000)));
+
+            $("#search").click(function () {
+                var startDate = formatDate(new Date($("#slider-range").slider("values", 0) * 86400000));
+                var endDate = formatDate(new Date($("#slider-range").slider("values", 1) * 86400000));
+                alert("Start Date: " + startDate + "\nEnd Date: " + endDate);
+            });
+        });
+
+        // Function to format date to 'yyyy-mm-dd' format
+        function formatDate(date) {
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+
+            if (month < 10) {
+                month = "0" + month;
+            }
+            if (day < 10) {
+                day = "0" + day;
+            }
+
+            return year + "-" + month + "-" + day;
+        }
+    </script>
+
+</body>
+
+</html>

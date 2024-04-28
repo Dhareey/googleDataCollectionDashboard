@@ -15,6 +15,13 @@
   <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.js'></script>
   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.css' rel='stylesheet' />
 
+  <!--
+    Slider CDN
+  -->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+  <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+
 
   <link rel="stylesheet" href="css/kepler.css">
   <style>
@@ -27,15 +34,17 @@
     #legend {
       position: absolute;
       top: 0px;
-      left: 10px;
+      left: 1px;
       background-color: #212120;
       padding: 10px;
       border-radius: 5px;
       z-index: 50;
-      color: rgba(255, 255, 255, 0.6);
+      color: white;
       width: 300px;
       height: 300px;
       font-size: 11px;
+      height: max-content;
+      border: 1px solid black;
     }
   </style>
 </head>
@@ -52,15 +61,6 @@
         <label id='legendHeading'>
           <input type="radio" name="basemap" value="positron">
           Positron
-        </label><br>
-        <h4 id='legendHeading'>Layers</h4>
-        <label>
-          <input type="checkbox" name='bathy' id="bathyLayerCheckbox" checked onclick="toggle()">
-          Google Roads Layer
-        </label><br>
-        <label id='legendHeading'>
-          <input type="checkbox" name='routes' id="routeLayerCheckbox" checked onclick="toggle()">
-          Collected Data Layer
         </label><br>
         <h4 id='legendHeading'>State Name</h4>
         <label id='legendHeading'>
@@ -88,7 +88,16 @@
           Kwara
         </label>
         <h4 id='legendHeading'>Filter Collected Data</h4>
-        <div id="date_range_slider"></div>
+
+
+        <span id="amount">Date Range: <span id="from"></span>   to   <span id="to"></span></span>
+        <br>
+        <p>
+        <div id="slider-range"></div>
+        </p>
+        <br>
+        <input type="button" value="Query" onclick="queryData()">
+        <p></p>
 
       </div>
     </div>
@@ -125,26 +134,26 @@
       </div>
       <div class="flexchild documentation">
         <div class="divHeader coords">
-          Total Uploads
+          Camera 6
         </div>
         <div class="dimBody">
           <table id="detailsTable">
             <tr class="tableHeader">
               <th style="border-right: 1px solid white;">
-                File Number
+                Kilometers
               </th>
               <th>
-                Kilometers
+                % of Total
               </th>
             </tr>
             <tr class="tableHeader">
               <td style="border-right: 1px solid white;">
-                <span class="landDoc" id="totaluploads">
+                <span class="landDoc" id="cam6km">
 
                 </span>
               </td>
               <td>
-                <span class="landDoc" id="totalkmupload">
+                <span class="landDoc" id="cam6kmpercent">
 
                 </span>
               </td>
@@ -355,13 +364,13 @@
               <td>
                 Oyo
               </td>
-              <td>
+              <td id="oyoKm">
 
               </td>
-              <td>
+              <td id="oyoTot">
 
               </td>
-              <td>
+              <td id="oyoDate">
 
               </td>
             </tr>
@@ -370,15 +379,15 @@
                 2
               </td>
               <td>
-                Ogun
+                Osun
               </td>
-              <td>
+              <td id="osunKm">
 
               </td>
-              <td>
+              <td id="osunTot">
 
               </td>
-              <td>
+              <td id="osunDate">
 
               </td>
             </tr>
@@ -387,18 +396,86 @@
                 3
               </td>
               <td>
-                Lagos
+                Ogun
               </td>
-              <td>
+              <td id="ogunKm">
 
               </td>
-              <td>
+              <td id="ogunTot">
 
               </td>
-              <td>
+              <td id="ogunDate">
 
               </td>
             </tr>
+            <tr>
+              <td style="border-right: 1px solid white;">
+                4
+              </td>
+              <td>
+                Lagos
+              </td>
+              <td id="lagosKm">
+
+              </td>
+              <td id="lagosTot">
+
+              </td>
+              <td id="lagosDate">
+
+              </td>
+            </tr>
+            <tr>
+              <td style="border-right: 1px solid white;">
+                5
+              </td>
+              <td>
+                Delta
+              </td>
+              <td id="deltaKm">
+
+              </td>
+              <td id="deltaTot">
+
+              </td>
+              <td id="deltaDate">
+
+              </td>
+            </tr>
+            <tr>
+              <td style="border-right: 1px solid white;">
+                6
+              </td>
+              <td>
+                Ondo
+              </td>
+              <td id="ondoKm">
+
+              </td>
+              <td id="ondoTot">
+
+              </td>
+              <td id="ondoDate">
+
+              </td>
+            </tr>
+
+            <tr>
+              <td style="border-right: 1px solid white;">
+                7
+              </td>
+              <td>
+                Edo
+              </td>
+              <td id="edoKm">
+
+              </td>
+              <td id="edoTot">
+
+              </td>
+              <td id="edoDate">
+
+              </td>
             </tr>
           </table>
         </div>

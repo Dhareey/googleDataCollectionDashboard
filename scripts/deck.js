@@ -1,7 +1,7 @@
-const pre_url = 'http://54.226.124.34:8000/api/get_all_google_roads'
-//const pre_url = 'http://127.0.0.1:8000/api/get_all_google_roads'
-const pre_url2 = "http://54.226.124.34:8000/api"
-//const pre_url2 = "http://127.0.0.1:8000/api"
+//const pre_url = 'http://54.226.124.34:8000/api/get_all_google_roads'
+const pre_url = 'http://127.0.0.1:8000/api/get_all_google_roads'
+//const pre_url2 = "http://54.226.124.34:8000/api"
+const pre_url2 = "http://127.0.0.1:8000/api"
 
 const { DeckGL, PathLayer, PolygonLayer, ColumnLayer } = deck;
 
@@ -10,10 +10,62 @@ const LINE_COLOR = [0, 255, 0]; // Green color for the lines
 // Get the target element by id
 const targetElement = document.getElementById('map');
 
+const oyoUrl = pre_url + "?state_name=Oyo"
+const ogunUrl = pre_url + "?state_name=Ogun"
+const lagUrl = pre_url + "?state_name=Lagos"
+const edoUrl = pre_url + "?state_name=Edo"
+const deltaUrl = pre_url + "?state_name=Delta"
+const kwaraUrl = pre_url + "?state_name=Kwara"
+let uniObject = {}
+
+//Table Contents
+//Get the containers
+let total_col_km_24 = document.getElementById('km24');
+let total_col_km_24_percent = document.getElementById('km24percent')
+let cam_1_km_24 = document.getElementById('cam1km')
+let cam_1_km_24_percent = document.getElementById('cam1kmpercent')
+let cam_2_km_24 = document.getElementById("cam2km");
+let cam_2_km_24_percent = document.getElementById('cam2kmpercent');
+let cam_3_km_24 = document.getElementById("cam3km");
+let cam_3_km_24_percent = document.getElementById("cam3kmpercent");
+let cam_4_km_24 = document.getElementById("cam4km");
+let cam_4_km_24_percent = document.getElementById("cam4kmpercent");
+let cam_5_km_24 = document.getElementById("cam5km");
+let cam_5_km_24_percent = document.getElementById("cam5kmpercent");
+let cam_6_km_24 = document.getElementById("cam6km");
+let cam_6_km_24_percent = document.getElementById("cam6kmpercent");
+
+//Get State table details
+let oyo_km = document.getElementById('oyoKm');
+let oyo_tot = document.getElementById('oyoTot')
+let oyo_date = document.getElementById('oyoDate')
+let ogun_km = document.getElementById('ogunKm')
+let ogun_tot = document.getElementById('ogunTot')
+let ogun_date = document.getElementById('ogunDate')
+let lagos_km = document.getElementById("lagosKm");
+let lagos_tot = document.getElementById('lagosTot');
+let lagos_date = document.getElementById("lagosDate");
+let ondo_km = document.getElementById("ondoKm");
+let ondo_date = document.getElementById("ondoDate");
+let ondo_tot = document.getElementById("ondoTot");
+let osun_km = document.getElementById("osunKm");
+let osun_tot = document.getElementById("osunTot");
+let osun_date = document.getElementById("osunDate");
+let edo_km = document.getElementById("edoKm");
+let edo_tot = document.getElementById("edoTot");
+let edo_date = document.getElementById("edoDate");
+let delta_km = document.getElementById("deltaKm");
+let delta_tot = document.getElementById("deltaTot");
+let delta_date = document.getElementById("deltaDate");
+
+//today's date
+var today = new Date();
+
+
+// DeckGL Container
 const deckcontainer = new DeckGL({
     container: targetElement,
     mapStyle: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-    //mapStyle: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
     initialViewState: {
         longitude: 3.3360,
         latitude: 6.5238,
@@ -24,91 +76,47 @@ const deckcontainer = new DeckGL({
     },
     controller: true,
 });
+// Date slider function
+$(function () {
+    var startDate = new Date('2024-02-21');
+    $("#slider-range").slider({
+        range: true,
+        min: startDate.getTime() / 86400000, // Divide by milliseconds in a day to get just date
+        max: today.getTime() / 86400000, // Divide by milliseconds in a day to get just date
+        step: 1, // Step by one day
+        values: [startDate.getTime() / 86400000, today.getTime() / 86400000], // Set initial values from startDate to today
+        slide: function (event, ui) {
+            document.getElementById('from').textContent = formatDate(new Date(ui.values[0] * 86400000))
+            document.getElementById('to').textContent = formatDate(new Date(ui.values[1] * 86400000))
+        }
+    });
+    document.getElementById('from').textContent = formatDate(new Date($("#slider-range").slider("values", 0) * 86400000))
+    document.getElementById('to').textContent = formatDate(new Date($("#slider-range").slider("values", 1) * 86400000))
 
-//1. Get data
+});
 
-/* const apiUrl = "http://127.0.0.1:8000/api/get_all_google_roads"
+// Function to format date to 'yyyy-mm-dd' format
+function formatDate(date) {
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
 
-function fetchDataandToggle() {
-    let skip = 0;
-    let limit = 10000
-    let chuncksize = 10000
-    while (limit < 179000) {
-
-        //Fetch data from API
-        fetch(`${apiUrl}?skip=${skip}&limit=${limit}`).then(response => {
-            if (!response.ok) {
-                throw new Error("Network response not OK");
-            }
-
-            //Parse the JSON response
-            return response.json();
-        }).then(data => {
-            allData = allData.concat(data);
-            toggle(data);
-        }).catch(error => {
-            console.error("There was a problem with the fetch operation: ", error);
-        })
-
-        skip += chuncksize;
-        limit += chuncksize;
+    if (month < 10) {
+        month = "0" + month;
+    }
+    if (day < 10) {
+        day = "0" + day;
     }
 
-}
-fetchDataandToggle();
-
-function updatedata(data) {
-
+    return year + "-" + month + "-" + day;
 }
 
-
-function toggle(data) {
-    let layers = [
-        new PathLayer({
-            id: 'GridLayer',
-            data: data, // Provide your route dataset here
-            getPath: d => d.geometry, // Assuming your route dataset has a 'path' property
-            getColor: [0, 255, 0], // Red color for routes
-            getWidth: 20, // Width of the route lines
-            getDashArray: [8, 4], // Dashed line effect
-            pickable: true,
-            visible: true
-        }),
-    ]
-
-    deckcontainer.setProps({ layers });
-
-}
- */
-
-const oyoUrl = pre_url + "?state_name=Oyo"
-const ogunUrl = pre_url + "?state_name=Ogun"
-const lagUrl = pre_url + "?state_name=Lagos"
-const edoUrl = pre_url + "?state_name=Edo"
-const deltaUrl = pre_url + "?state_name=Delta"
-const kwaraUrl = pre_url + "?state_name=Kwara"
-let uniObject = {}
 
 
 // Get General statistics
-function updateGeneralStats() {
-    //Get the containers
-    let total_col_km_24 = document.getElementById('km24');
-    let total_col_km_24_percent = document.getElementById('km24percent')
-    let total_uploads_24 = document.getElementById('totaluploads')
-    let total_uploads_km_24 = document.getElementById('totalkmupload')
-    let cam_1_km_24 = document.getElementById('cam1km')
-    let cam_1_km_24_percent = document.getElementById('cam1kmpercent')
-    let cam_2_km_24 = document.getElementById("cam2km");
-    let cam_2_km_24_percent = document.getElementById('cam2kmpercent');
-    let cam_3_km_24 = document.getElementById("cam3km");
-    let cam_3_km_24_percent = document.getElementById("cam3kmpercent");
-    let cam_4_km_24 = document.getElementById("cam4km");
-    let cam_4_km_24_percent = document.getElementById("cam4kmpercent");
-    let cam_5_km_24 = document.getElementById("cam5km");
-    let cam_5_km_24_percent = document.getElementById("cam5kmpercent");
+function updateGeneralStats(url_to_check) {
 
-    fetch(pre_url2 + "/get_stats").then(response => {
+    fetch(url_to_check).then(response => {
         if (!response.ok) {
             throw new Error("network response was not OK");
         }
@@ -117,8 +125,6 @@ function updateGeneralStats() {
         .then(data => {
             total_col_km_24.textContent = data["covered_km"].toFixed(2);
             total_col_km_24_percent.textContent = data["percent_covered"].toFixed(2);
-            total_uploads_24.textContent = data["total_uploads"].toFixed(2);
-            total_uploads_km_24.textContent = data["total_upload_km"].toFixed(2);
             cam_1_km_24.textContent = data["cam1_km"].toFixed(2);
             cam_1_km_24_percent.textContent = data["cam1_percent"].toFixed(2);
             cam_2_km_24.textContent = data["cam2_km"].toFixed(2);
@@ -129,6 +135,8 @@ function updateGeneralStats() {
             cam_4_km_24_percent.textContent = data["cam4_percent"].toFixed(2);
             cam_5_km_24.textContent = data["cam5_km"].toFixed(2);
             cam_5_km_24_percent.textContent = data["cam5_percent"].toFixed(2);
+            cam_6_km_24.textContent = data["cam6_km"].toFixed(2);
+            cam_6_km_24_percent.textContent = data["cam6_percent"].toFixed(2);
 
         })
         .catch(error => {
@@ -138,24 +146,48 @@ function updateGeneralStats() {
 }
 
 // Get State statistics
-function getStateStatistics() {
-    fetch(pre_url2 + "/get_state_stats").then(response => {
-        if (!respomnse.ok) {
+function getStateStatistics(url_to_check) {
+    fetch(url_to_check).then(response => {
+        if (!response.ok) {
             throw new Error('Network Response was not ok');
         }
         return response.json();
     })
         .then(data => {
+            oyo_km.textContent = data['Oyo']['covered_km'];
+            oyo_tot.textContent = data['Oyo']['percent_covered'];
+            oyo_date.textContent = data['Oyo']['start_date'];
+            ogun_km.textContent = data['Ogun']['covered_km'];
+            ogun_tot.textContent = data['Ogun']['percent_covered'];
+            ogun_date.textContent = data['Ogun']['start_date'];
+            lagos_km.textContent = data['Lagos']['covered_km'];
+            lagos_tot.textContent = data['Lagos']['percent_covered'];
+            lagos_date.textContent = data['Lagos']['start_date'];
+            delta_km.textContent = data['Delta']['covered_km'];
+            delta_tot.textContent = data['Delta']['percent_covered'];
+            delta_date.textContent = data['Delta']['start_date'];
+            ondo_km.textContent = data['Ondo']['covered_km'];
+            ondo_date.textContent = data['Ondo']['start_date'];
+            ondo_tot.textContent = data['Ondo']['percent_covered'];
+            osun_km.textContent = data['Osun']['covered_km'];
+            osun_date.textContent = data['Osun']['start_date'];
+            osun_tot.textContent = data['Osun']['percent_covered'];
+            edo_km.textContent = data['Edo']['covered_km'];
+            edo_date.textContent = data['Edo']['start_date'];
+            edo_tot.textContent = data['Edo']['percent_covered'];
+
+
 
         })
         .catch(error => {
-            conaole.log('Error Fetching Data:', error);
+            console.log('Error Fetching Data:', error);
             return null;
         })
 }
 
 // Select and edit road details and information
-updateGeneralStats();
+updateGeneralStats(pre_url2 + "/get_stats");
+getStateStatistics(pre_url2 + "/get_state_stats");
 
 function fetchData(url) {
     return fetch(url).then(response => {
@@ -185,24 +217,30 @@ function updateUniObject(uniObj, objkey, data) {
 function toggle() {
     let layers = Object.entries(uniObject).map(([key, value]) => {
         let visibility = document.getElementById(key).checked
+        let sliderValues = $("#slider-range").slider("values");
+        let startingDate = new Date(sliderValues[0] * 86400000)
+        let endingDate = new Date(sliderValues[1] * 86400000)
+
         return new PathLayer({
             id: key,
             data: value,
             getPath: d => d.geometry, // Assuming your route dataset has a 'path' property
             getColor: d => {
-                const stat = d.status;
-                if (stat == 0) {
-                    return [255, 0, 0];
-                } else if (stat == 100) {
+                let collectionDate = new Date(d.collection_date);
+                if (collectionDate >= startingDate && collectionDate <= endingDate) {
                     return [0, 255, 0];
                 } else {
-                    return [0, 0, 255];
+                    return [255, 0, 0];
                 }
             }, // Red color for routes
             getWidth: 20, // Width of the route lines
             getDashArray: [8, 4], // Dashed line effect
             pickable: true,
-            visible: visibility
+            visible: visibility,
+            // Add updateTrigger for getFillColor based on ref
+            updateTriggers: {
+                getColor: [sliderValues] // Update when reference value changes
+            }
 
         })
     })
@@ -226,4 +264,18 @@ document.querySelectorAll('input[type="radio"][name="basemap"]').forEach((radio)
     });
 });
 
+
+// Update data on date slider
+function queryData() {
+    var startingDate = formatDate(new Date($("#slider-range").slider("values", 0) * 86400000));
+    var endingDate = formatDate(new Date($("#slider-range").slider("values", 1) * 86400000));
+    let url_to_get = pre_url2 + `/get_stats?col_start_date=${startingDate}&col_end_date=${endingDate}`
+    let state_url_to_get = pre_url2 + `/get_state_stats?col_start_date=${startingDate}&col_end_date=${endingDate}`
+
+    // Update general stats
+    updateGeneralStats(url_to_get);
+    // Update state statistics
+    getStateStatistics(state_url_to_get);
+    toggle();
+}
 
