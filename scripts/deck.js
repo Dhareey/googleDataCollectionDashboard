@@ -195,6 +195,7 @@ updateGeneralStats(pre_url2 + "/get_stats");
 getStateStatistics(pre_url2 + "/get_state_stats");
 
 // Get Lagos data
+/*
 
 async function fetchLagosData(url) {
     return fetch(url).then(response => {
@@ -235,6 +236,7 @@ async function updateLagosUniObject(uniObj, objKey, data) {
 }
 
 fetchAllLagData();
+*/
 
 async function fetchData(url) {
     return fetch(url).then(response => {
@@ -257,12 +259,12 @@ async function fetchData(url) {
 
 async function fetchAllData() {
     await Promise.all(
-        [
-            fetchData(oyoUrl),
-            fetchData(ogunUrl),
-            fetchData(edoUrl),
-            fetchData(deltaUrl),
-            fetchData(kwaraUrl)])
+        [fetchData(lagUrl),
+        fetchData(oyoUrl),
+        fetchData(ogunUrl),
+        fetchData(edoUrl),
+        fetchData(deltaUrl),
+        fetchData(kwaraUrl)])
 }
 
 
