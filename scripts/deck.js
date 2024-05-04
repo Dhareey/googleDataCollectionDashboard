@@ -1,7 +1,7 @@
-//const pre_url = 'http://54.226.124.34:8000/api/get_all_google_roads'
-const pre_url = 'http://127.0.0.1:8000/api/get_all_google_roads'
-//const pre_url2 = "http://54.226.124.34:8000/api"
-const pre_url2 = "http://127.0.0.1:8000/api"
+const pre_url = 'https://googledatacollectiondashboardapi.onrender.com/api/get_all_google_roads'
+//const pre_url = 'http://127.0.0.1:8000/api/get_all_google_roads'
+const pre_url2 = "https://googledatacollectiondashboardapi.onrender.com/api"
+//const pre_url2 = "http://127.0.0.1:8000/api"
 
 const { DeckGL, PathLayer, PolygonLayer, ColumnLayer } = deck;
 
