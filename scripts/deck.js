@@ -12,6 +12,11 @@ const targetElement = document.getElementById('map');
 
 const oyoUrl = pre_url + "?state_name=Oyo"
 const ogunUrl = pre_url + "?state_name=Ogun"
+const lagUrl1 = pre_url + "?state_name=Lagos&skip=0&limit=10000"
+const lagUrl2 = pre_url + "?state_name=Lagos&skip=10001&limit=20000"
+const lagUrl3 = pre_url + "?state_name=Lagos&skip=20001&limit=30000"
+const lagUrl4 = pre_url + "?state_name=Lagos&skip=30001&limit=39000"
+const lagUrl5 = pre_url + "?state_name=Lagos&skip=39001"
 const lagUrl = pre_url + "?state_name=Lagos"
 const edoUrl = pre_url + "?state_name=Edo"
 const deltaUrl = pre_url + "?state_name=Delta"
@@ -189,7 +194,49 @@ function getStateStatistics(url_to_check) {
 updateGeneralStats(pre_url2 + "/get_stats");
 getStateStatistics(pre_url2 + "/get_state_stats");
 
-function fetchData(url) {
+// Get Lagos data
+
+async function fetchLagosData(url) {
+    return fetch(url).then(response => {
+        if (!response.ok) {
+            throw new Error("Network response was not OK");
+        }
+        return response.json();
+    })
+        .then(data => {
+            updateLagosUniObject(uniObject, "Lagos", data);
+        })
+        .catch(error => {
+            console.log("Error fetching data:", error);
+            return null;
+        });
+}
+
+async function fetchAllLagData() {
+    await Promise.all([
+        fetchLagosData(lagUrl1),
+        fetchLagosData(lagUrl2),
+        fetchLagosData(lagUrl3),
+        fetchLagosData(lagUrl4),
+        fetchLagosData(lagUrl5)]
+    )
+}
+
+async function updateLagosUniObject(uniObj, objKey, data) {
+    if (objKey in uniObj) {
+        // If objKey already exists in uniObj, add data to its existing value
+        uniObj[objKey] = uniObj[objKey].concat(data);
+    } else {
+        // If objKey doesn't exist, create it and assign data to it
+        uniObj[objKey] = data;
+    }
+
+    toggle()
+}
+
+fetchAllLagData();
+
+async function fetchData(url) {
     return fetch(url).then(response => {
         if (!response.ok) {
             throw new Error("Network response was not OK");
@@ -207,12 +254,26 @@ function fetchData(url) {
         });
 }
 
-Promise.all([fetchData(lagUrl), fetchData(oyoUrl), fetchData(ogunUrl), fetchData(edoUrl), fetchData(deltaUrl), fetchData(kwaraUrl)])
 
-function updateUniObject(uniObj, objkey, data) {
+async function fetchAllData() {
+    await Promise.all(
+        [
+            fetchData(oyoUrl),
+            fetchData(ogunUrl),
+            fetchData(edoUrl),
+            fetchData(deltaUrl),
+            fetchData(kwaraUrl)])
+}
+
+
+
+async function updateUniObject(uniObj, objkey, data) {
     uniObj[objkey] = data;
     toggle();
 }
+
+fetchAllData();
+
 
 function toggle() {
     let layers = Object.entries(uniObject).map(([key, value]) => {
@@ -224,7 +285,7 @@ function toggle() {
         return new PathLayer({
             id: key,
             data: value,
-            getPath: d => d.geometry, // Assuming your route dataset has a 'path' property
+            getPath: d => d.geometry,
             getColor: d => {
                 let collectionDate = new Date(d.collection_date);
                 if (collectionDate >= startingDate && collectionDate <= endingDate) {
