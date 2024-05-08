@@ -1,5 +1,5 @@
-const pre_url = 'https://googledatacollectiondashboardapi.onrender.com/api/get_all_google_roads'
-//const pre_url = 'http://127.0.0.1:8000/api/get_all_google_roads'
+const pre_url = 'https://googledatacollectiondashboardapi.onrender.com/api/get_all_google_json_roads'
+//const pre_url = 'http://127.0.0.1:8000/api/get_all_google_json_roads'
 const pre_url2 = "https://googledatacollectiondashboardapi.onrender.com/api"
 //const pre_url2 = "http://127.0.0.1:8000/api"
 
@@ -9,6 +9,8 @@ const LINE_COLOR = [0, 255, 0]; // Green color for the lines
 
 // Get the target element by id
 const targetElement = document.getElementById('map');
+let cameras = [1, 2, 3, 4, 5, 6];
+const flexchildDivs = document.querySelectorAll('.flexchild');
 
 const oyoUrl = pre_url + "?state_name=Oyo"
 const ogunUrl = pre_url + "?state_name=Ogun"
@@ -23,45 +25,9 @@ const deltaUrl = pre_url + "?state_name=Delta"
 const kwaraUrl = pre_url + "?state_name=Kwara"
 let uniObject = {}
 
-//Table Contents
-//Get the containers
-let total_col_km_24 = document.getElementById('km24');
-let total_col_km_24_percent = document.getElementById('km24percent')
-let cam_1_km_24 = document.getElementById('cam1km')
-let cam_1_km_24_percent = document.getElementById('cam1kmpercent')
-let cam_2_km_24 = document.getElementById("cam2km");
-let cam_2_km_24_percent = document.getElementById('cam2kmpercent');
-let cam_3_km_24 = document.getElementById("cam3km");
-let cam_3_km_24_percent = document.getElementById("cam3kmpercent");
-let cam_4_km_24 = document.getElementById("cam4km");
-let cam_4_km_24_percent = document.getElementById("cam4kmpercent");
-let cam_5_km_24 = document.getElementById("cam5km");
-let cam_5_km_24_percent = document.getElementById("cam5kmpercent");
-let cam_6_km_24 = document.getElementById("cam6km");
-let cam_6_km_24_percent = document.getElementById("cam6kmpercent");
 
-//Get State table details
-let oyo_km = document.getElementById('oyoKm');
-let oyo_tot = document.getElementById('oyoTot')
-let oyo_date = document.getElementById('oyoDate')
-let ogun_km = document.getElementById('ogunKm')
-let ogun_tot = document.getElementById('ogunTot')
-let ogun_date = document.getElementById('ogunDate')
-let lagos_km = document.getElementById("lagosKm");
-let lagos_tot = document.getElementById('lagosTot');
-let lagos_date = document.getElementById("lagosDate");
-let ondo_km = document.getElementById("ondoKm");
-let ondo_date = document.getElementById("ondoDate");
-let ondo_tot = document.getElementById("ondoTot");
-let osun_km = document.getElementById("osunKm");
-let osun_tot = document.getElementById("osunTot");
-let osun_date = document.getElementById("osunDate");
-let edo_km = document.getElementById("edoKm");
-let edo_tot = document.getElementById("edoTot");
-let edo_date = document.getElementById("edoDate");
-let delta_km = document.getElementById("deltaKm");
-let delta_tot = document.getElementById("deltaTot");
-let delta_date = document.getElementById("deltaDate");
+let states = ["Ogun", "Lagos", "Oyo", "Osun", "Kwara", "Edo", "Delta"];
+
 
 //today's date
 var today = new Date();
@@ -116,83 +82,131 @@ function formatDate(date) {
     return year + "-" + month + "-" + day;
 }
 
+//Delete table rows
+function deleteAllTableRows() {
+    const table = document.getElementById('ownershipTable');
+    while (table.rows.length > 1) {
+        table.deleteRow(1); // Deleting rows starting from index 1 (index 0 is the header row)
+    }
+}
 
 
 // Get General statistics
-function updateGeneralStats(url_to_check) {
+async function fetchAndFillFlexChild(url, cameraNumber) {
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        index = cameraNumber + 1
 
-    fetch(url_to_check).then(response => {
-        if (!response.ok) {
-            throw new Error("network response was not OK");
-        }
-        return response.json();
-    })
-        .then(data => {
-            total_col_km_24.textContent = data["covered_km"].toFixed(2);
-            total_col_km_24_percent.textContent = data["percent_covered"].toFixed(2);
-            cam_1_km_24.textContent = data["cam1_km"].toFixed(2);
-            cam_1_km_24_percent.textContent = data["cam1_percent"].toFixed(2);
-            cam_2_km_24.textContent = data["cam2_km"].toFixed(2);
-            cam_2_km_24_percent.textContent = data["cam2_percent"].toFixed(2);
-            cam_3_km_24.textContent = data["cam3_km"].toFixed(2);
-            cam_3_km_24_percent.textContent = data["cam3_percent"].toFixed(2);
-            cam_4_km_24.textContent = data["cam4_km"].toFixed(2);
-            cam_4_km_24_percent.textContent = data["cam4_percent"].toFixed(2);
-            cam_5_km_24.textContent = data["cam5_km"].toFixed(2);
-            cam_5_km_24_percent.textContent = data["cam5_percent"].toFixed(2);
-            cam_6_km_24.textContent = data["cam6_km"].toFixed(2);
-            cam_6_km_24_percent.textContent = data["cam6_percent"].toFixed(2);
+        flexchildDivs[index].querySelector('#title').textContent = `Camera ${data.camera_number}`;
+        flexchildDivs[index].querySelector('#cam').textContent = data.length_with_camera_number;
+        flexchildDivs[index].querySelector('#percent').textContent = data.percentage_covered;
 
-        })
-        .catch(error => {
-            console.log("Error Fetching data:", error);
-            return null;
-        });
+
+    }
+    catch (error) {
+        console.error(`Error fetching data for camera ${cameraNumber}:`, error);
+    }
 }
 
-// Get State statistics
-function getStateStatistics(url_to_check) {
-    fetch(url_to_check).then(response => {
-        if (!response.ok) {
-            throw new Error('Network Response was not ok');
-        }
-        return response.json();
-    })
-        .then(data => {
-            oyo_km.textContent = data['Oyo']['covered_km'];
-            oyo_tot.textContent = data['Oyo']['percent_covered'];
-            oyo_date.textContent = data['Oyo']['start_date'];
-            ogun_km.textContent = data['Ogun']['covered_km'];
-            ogun_tot.textContent = data['Ogun']['percent_covered'];
-            ogun_date.textContent = data['Ogun']['start_date'];
-            lagos_km.textContent = data['Lagos']['covered_km'];
-            lagos_tot.textContent = data['Lagos']['percent_covered'];
-            lagos_date.textContent = data['Lagos']['start_date'];
-            delta_km.textContent = data['Delta']['covered_km'];
-            delta_tot.textContent = data['Delta']['percent_covered'];
-            delta_date.textContent = data['Delta']['start_date'];
-            ondo_km.textContent = data['Ondo']['covered_km'];
-            ondo_date.textContent = data['Ondo']['start_date'];
-            ondo_tot.textContent = data['Ondo']['percent_covered'];
-            osun_km.textContent = data['Osun']['covered_km'];
-            osun_date.textContent = data['Osun']['start_date'];
-            osun_tot.textContent = data['Osun']['percent_covered'];
-            edo_km.textContent = data['Edo']['covered_km'];
-            edo_date.textContent = data['Edo']['start_date'];
-            edo_tot.textContent = data['Edo']['percent_covered'];
 
-
-
-        })
-        .catch(error => {
-            console.log('Error Fetching Data:', error);
-            return null;
-        })
+async function fillFlexChildDivs(startdate = null, enddate = null) {
+    let posturl = ""
+    if (startdate) {
+        posturl += `&start_date=${startdate}`
+    }
+    if (enddate) {
+        posturl += `&end_date=${enddate}`
+    }
+    for (let i = 0; i < cameras.length; i++) {
+        camurl = pre_url2 + `/stats_camera?camera_number=${cameras[i]}` + posturl;
+        await fetchAndFillFlexChild(camurl, cameras[i]);
+    }
 }
 
-// Select and edit road details and information
-updateGeneralStats(pre_url2 + "/get_stats");
-getStateStatistics(pre_url2 + "/get_state_stats");
+fillFlexChildDivs();
+//// General Statistcis End
+
+// Function to fetch data for a state and append to the table
+async function fetchDataAndAppend(state, serialNumber, address) {
+    try {
+        let response = await fetch(address);
+        const data = await response.json();
+
+        const tableRow = `
+        <tr>
+          <td>${serialNumber}</td>
+          <td>${data.state_name}</td>
+          <td>${data.total_length_status_100}</td>
+          <td>${data.total_length}</td>
+          <td>${data.percentage_covered}</td>
+          <td>${data.first_date_status_100}</td>
+        </tr>
+      `;
+
+        document.getElementById('ownershipTable').innerHTML += tableRow;
+    } catch (error) {
+        console.error(`Error fetching data for ${state}:`, error);
+    }
+}
+
+// Function to iterate through states and fetch data
+async function fetchDataForStates(startdate = null, enddate = null) {
+    let posturl = ""
+    if (startdate) {
+        posturl += `&start_date=${startdate}`
+    }
+    if (enddate) {
+        posturl += `&end_date=${enddate}`
+    }
+    for (let i = 0; i < states.length; i++) {
+        stateurl = pre_url2 + `/google_road_stats?state_name=${states[i]}` + posturl;
+        await fetchDataAndAppend(states[i], i + 1, stateurl);
+    }
+}
+
+// Call the function to fetch data for all states
+fetchDataForStates();
+// Fetch data for all states ends
+
+
+//// Get the total completed road done and fill it in
+async function fetchProgressDataAndAppend(address) {
+    try {
+        let response = await fetch(address);
+        const data = await response.json();
+        flexchildDivs[0].querySelector('#title').textContent = "Collected Data 2023";
+        flexchildDivs[0].querySelector('#cam').textContent = data.total_covered_2023;
+        flexchildDivs[0].querySelector('#percent').textContent = data.percentage_2023;
+        flexchildDivs[1].querySelector('#title').textContent = "Collected Data 2024";
+        flexchildDivs[1].querySelector('#cam').textContent = data.total_covered_2024;
+        flexchildDivs[1].querySelector('#percent').textContent = data.percentage_2024;
+
+
+        ;
+
+    } catch (error) {
+        console.error(`Error fetching progress data`, error);
+    }
+}
+
+// Function to iterate through states and fetch data
+async function fetchDataForRoadUpdate(startdate = null, enddate = null) {
+    let posturl = "/get_progress"
+    if (startdate) {
+        posturl += `?start_date=${startdate}`
+    }
+    if (enddate) {
+        posturl += `&end_date=${enddate}`
+    }
+    progressurl = pre_url2 + posturl;
+    await fetchProgressDataAndAppend(progressurl);
+}
+
+// Call the function to fetch data for all states
+fetchDataForRoadUpdate();
+// Fetch data for all states ends
+
 
 // Get Lagos data
 /*
@@ -237,6 +251,7 @@ async function updateLagosUniObject(uniObj, objKey, data) {
 
 fetchAllLagData();
 */
+////////////////////////////////////////////////////////////////////////////////////////////
 
 async function fetchData(url) {
     return fetch(url).then(response => {
@@ -287,7 +302,7 @@ function toggle() {
         return new PathLayer({
             id: key,
             data: value,
-            getPath: d => d.geometry,
+            getPath: d => d.geometry.coordinates,
             getColor: d => {
                 let collectionDate = new Date(d.collection_date);
                 if (collectionDate >= startingDate && collectionDate <= endingDate) {
@@ -309,7 +324,6 @@ function toggle() {
     })
     deckcontainer.setProps({ layers });
 }
-
 
 // Change Basemap on click
 document.querySelectorAll('input[type="radio"][name="basemap"]').forEach((radio) => {
@@ -333,12 +347,13 @@ function queryData() {
     var startingDate = formatDate(new Date($("#slider-range").slider("values", 0) * 86400000));
     var endingDate = formatDate(new Date($("#slider-range").slider("values", 1) * 86400000));
     let url_to_get = pre_url2 + `/get_stats?col_start_date=${startingDate}&col_end_date=${endingDate}`
-    let state_url_to_get = pre_url2 + `/get_state_stats?col_start_date=${startingDate}&col_end_date=${endingDate}`
 
+    //Update State Statistics
+    deleteAllTableRows()
+    fetchDataForStates(startingDate, endingDate)
     // Update general stats
-    updateGeneralStats(url_to_get);
-    // Update state statistics
-    getStateStatistics(state_url_to_get);
+    fillFlexChildDivs(startingDate, endingDate);
+    //Update the total road covered
+    fetchDataForRoadUpdate(startingDate, endingDate)
     toggle();
 }
-
