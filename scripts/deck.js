@@ -38,8 +38,8 @@ const deckcontainer = new DeckGL({
     container: targetElement,
     mapStyle: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
     initialViewState: {
-        longitude: 3.3360,
-        latitude: 6.5238,
+        longitude: 3.635676,
+        latitude: 6.837579,
         zoom: 11,
         maxZoom: 20,
         bearing: 0
@@ -274,12 +274,14 @@ async function fetchData(url) {
 
 async function fetchAllData() {
     await Promise.all(
-        [fetchData(lagUrl),
-        fetchData(oyoUrl),
-        fetchData(ogunUrl),
-        fetchData(edoUrl),
-        fetchData(deltaUrl),
-        fetchData(kwaraUrl)])
+        [
+            fetchData(oyoUrl),
+            fetchData(ogunUrl),
+            fetchData(edoUrl),
+            fetchData(deltaUrl),
+            fetchData(kwaraUrl),
+            fetchData(lagUrl)
+        ])
 }
 
 
