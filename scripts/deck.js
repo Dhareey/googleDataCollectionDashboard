@@ -12,21 +12,25 @@ const targetElement = document.getElementById('map');
 let cameras = [1, 2, 3, 4, 5, 6];
 const flexchildDivs = document.querySelectorAll('.flexchild');
 
+//const lagUrl1 = pre_url + "?state_name=Lagos&skip=0&limit=10000"
+//const lagUrl2 = pre_url + "?state_name=Lagos&skip=10001&limit=20000"
+//const lagUrl3 = pre_url + "?state_name=Lagos&skip=20001&limit=30000"
+//const lagUrl4 = pre_url + "?state_name=Lagos&skip=30001&limit=39000"
+//const lagUrl5 = pre_url + "?state_name=Lagos&skip=39001"
 const oyoUrl = pre_url + "?state_name=Oyo"
 const ogunUrl = pre_url + "?state_name=Ogun"
-const lagUrl1 = pre_url + "?state_name=Lagos&skip=0&limit=10000"
-const lagUrl2 = pre_url + "?state_name=Lagos&skip=10001&limit=20000"
-const lagUrl3 = pre_url + "?state_name=Lagos&skip=20001&limit=30000"
-const lagUrl4 = pre_url + "?state_name=Lagos&skip=30001&limit=39000"
-const lagUrl5 = pre_url + "?state_name=Lagos&skip=39001"
 const lagUrl = pre_url + "?state_name=Lagos"
 const edoUrl = pre_url + "?state_name=Edo"
 const deltaUrl = pre_url + "?state_name=Delta"
 const kwaraUrl = pre_url + "?state_name=Kwara"
+const osunUrl = pre_url + "?state_name=Osun"
+const nigerUrl = pre_url + "?state_name=Niger"
+const ondoUrl = pre_url + "?state_name=Ondo"
+
 let uniObject = {}
 
 
-let states = ["Ogun", "Lagos", "Oyo", "Osun", "Kwara", "Edo", "Delta"];
+let states = ["Ogun", "Lagos", "Oyo", "Osun", "Kwara", "Edo", "Delta", "Niger", "Ondo"];
 
 
 //today's date
@@ -280,7 +284,10 @@ async function fetchAllData() {
             fetchData(edoUrl),
             fetchData(deltaUrl),
             fetchData(kwaraUrl),
-            fetchData(lagUrl)
+            fetchData(lagUrl),
+            fetchData(osunUrl),
+            fetchData(ondoUrl),
+            fetchData(nigerUrl)
         ])
 }
 

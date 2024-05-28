@@ -30,9 +30,9 @@ body {
 
 }
 
-input[type=button]{
+input[type=button] {
   background-color: #609fe7;
-  border:1px solid #609fe7;
+  border: 1px solid #609fe7;
   border-radius: 10px;
   color: white;
   padding: 8px 40px;
@@ -263,6 +263,11 @@ input[type=button]{
   font-family: 'Montserrat', sans-serif;
   border-right: 1px solid white;
   text-align: left;
+}
+
+.tableContainer {
+  max-height: 100%;
+  overflow: auto;
 }
 
 
