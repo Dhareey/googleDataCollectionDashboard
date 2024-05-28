@@ -42,8 +42,8 @@ const deckcontainer = new DeckGL({
     container: targetElement,
     mapStyle: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
     initialViewState: {
-        longitude: 3.635676,
-        latitude: 6.837579,
+        longitude: 5.760269,
+        latitude: 5.544230,
         zoom: 11,
         maxZoom: 20,
         bearing: 0
